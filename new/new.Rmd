@@ -1,0 +1,19 @@
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Import data from file
+data <- read.table("gengv.csv", header=TRUE,sep=",")
+data
+
+# Use pivot_longer function to make it tidy
+data %>% pivot_longer(
+  `X2020`:`X2015`, names_to = "year", values_to = "Students")
+
+
+```
+
+

@@ -1,0 +1,51 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# create the vectors with the data
+gend <- matrix(c(1044,893,971,851,962,912,408,332,389,380,390,436), ncol = 6, byrow = TRUE)
+colnames(gend) <- c("2020","2019","2018","2017","2016","2015")
+rownames(gend) <- c("Female", "Male")
+
+# make the matrix a table with as.table() function
+gend <- as.table(gend)
+
+# Display data fo gend
+gend
+
+```
+
+```{r}
+# Perform the chisq.test
+results <- chisq.test(gend)
+
+# display results
+results$expected
+results
+
+```
+
+Ho: No relationship exist between the number of male and female students over the last 5 years
+Ha: There is a relationship between the number of male and female students over the last 5 years
+
+Test Statistic = X-squared = 11.814
+p-value = 0.03743
+
+Conclusion: Reject Ho in favor of Ha. There is sufficient evidence to conclude that a relationship exist between the year and the amount of males and females.
+
+```{r}
+# create a barplot with the information
+
+barplot(gend, ylim = c(0,1300),ylab='Counts',beside = TRUE, legend = TRUE)
+
+```
+
+

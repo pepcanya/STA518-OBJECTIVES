@@ -1,0 +1,126 @@
+---
+title: 'Homework #3'
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Dora et al. (European Spinal Journal (2002)) investigated spinal canal dimensions in subjects symptomatic with disc herniation selected for a discectomy and asymptomatic individuals (control group).  One of the areas of interest was determining if there is difference between the two groups in the spinal canal cross-sectional area (cm2) between vertebra L5/S1.  The data in the following table are simulated to be consistent with the results reported in the paper.  This data has been saved in the file entitled Hwk03.csv.  
+
+a) Compute the mean, median, standard deviation, and range for the data in each group.
+```{r}
+# import data
+hern <- c(2.62,2.57,1.98,3.21,3.59,1.60,1.80,3.91,
+          2.56,1.53,2.39,2.67,3.53,2.26,2.82,2.09,
+          3.79,2.45,2.55,2.10,2.28,2.33,2.81,3.70,
+          2.61) 
+
+```
+
+
+```{r}
+
+# calculate the mean, median, sd and range of the data
+mean(hern)
+median(hern)
+sd(hern)
+max(hern)-min(hern)
+```
+The mean of Herniated Disc Group (#1): 2.63
+
+The median of of Herniated Disc Group (#1): 2.56
+
+The standard deviation of Herniated Disc Group (#1): 0.666977
+
+The range of Herniated Disc Group (#1): 2.38
+
+```{r}
+# import data
+contr <- c(3.72,4.30,2.87,3.87,2.73,5.28,1.33,2.36,
+           3.67,1.64,3.54,3.63,4.26,3.08,3.32,4.00,
+           2.76,3.58,5.02,3.62,3.02,3.15,3.57,2.37,
+           5.42,3.35,2.62,3.72,4.37,5.28,4.97,2.58,
+           2.25,3.12,3.43,12.98,3.95,2.98,4.11,3.08,
+           2.22)
+
+#calculate mean, median, sd and range of the data
+mean(contr)
+median(contr)
+sd(contr)
+max(contr)-min(contr)
+
+```
+The mean for control group (#2): 3.685854
+
+The median for control group (#2): 3.54
+
+The standard deviation for control group (#2): 1.763087
+
+The range for control group (#2): 11.65
+
+b) Construct an appropriate boxplot for this dataset.
+Boxplot for Herniated Disc Group (#1):
+```{r}
+# create a boxplot
+boxplot(hern, col="orange", horizontal = TRUE)
+
+```
+
+Boxplot for Control Group (#2):
+```{r}
+# create a boxplot
+boxplot(contr, col="orange", horizontal = TRUE)
+
+```
+
+c) Assess the normality of the data in each group and discuss your conclusions.
+
+Normality of Herniated Disc Group (#1):
+```{r}
+# create a qq line to display the data for group 1
+
+qqnorm(hern,ylab="Spinal Canal Dimensions",xlab="Scores",main="Herniated Disc Group (#1)") 
+qqline(hern)
+
+```
+
+Conclusions on the normality of the data:
+In order to have a normally distributed data, you have to see a straight diagonal line in the plot. In this case, most of the values fall in the line, but at the end we have 6 values that are in the left part of the line. We can say that is a left-skewed data. 
+
+Normality of Control Group (#2):
+```{r}
+# create a qq line to display the data for group 1
+
+qqnorm(contr,ylab="Spinal Canal Dimensions",xlab="Scores",main="Control Group (#2)") 
+qqline(hern)
+
+```
+
+Conclusions on the normality of the data:
+As mentioned before, in order to have a normally distributed data, you have to see a straight diagonal line in the plot. In this case, we have a similar plot as the Group 1. In this case, the plot follows a straight line, but it is going most of the points to the left of the plot. In addition, we have a value that is all the way to the left: 12.98. We have a left-skewed data. 
+
+
+Knowing what you know from this class (so far) do you think there is a difference in the spinal canal cross-sectional areas between the population of subjects with disc herniations and the population of those who do not have disc herniations? 
+
+In order to determine if there is a difference in the spinal canal cross-section ares between the population of subjects for both groups we have to conduct an Hypotesis test of 2 different independent samples.We will use the average of both groups, the standard deviation for both groups and the number of samples in both groups. 
+
+Ho: Average of area in Group 1 and 2 are the same
+Ha: Average of area in Group 1 and 2 are different
+
+Test Statistic (Calculator): 
+
+t = -3.45097
+p = 0.00107
+
+Since we have a 2-tail test we have to multiply p times 2
+
+p = 0.00107*2 = 0.00214
+
+Reject Ho since p-value is less than 0.05. 
+
+Conclusion: There is sufficient evidence to conclude that there is a difference in the spinal canal cross-sectional areas between the population of subjects with disc herniations and the population of those who do not have disc herniations. 
+
