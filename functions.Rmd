@@ -1,0 +1,27 @@
+---
+title: "Untitled"
+author: "Pep Canyadell"
+date: "12/16/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Functions
+
+```{r}
+# function to change temperature from Fahrenheit fo Celcius
+f_to_c <- function(temp_f) {
+  temp_c <- (temp_f - 32) * 5 / 9
+  return (temp_c)
+}
+
+# use different temperatures to change from f to c
+
+f_to_c(30)
+f_to_c(0)
+f_to_c(100)
+
+```
