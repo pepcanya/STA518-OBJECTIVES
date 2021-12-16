@@ -1,0 +1,165 @@
+---
+title: "Regression Model and Chi - Square "
+author: "Pep Canyadell"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+*1. Build a model that can be used to predict volume (V) using age group and weight (W) from the data presented in Problem 11.20, page 509 – 510 (from the 11th ed. of our text) or Problem 11.23, page 589 (if you are using the 10th ed. of our text). Then use this model to predict the volume (in liters) for an infant weighing 9 kg, a child weighing 18 kg, and an adult weighing 78 kg.*
+
+
+```{r}
+# import the data for the infant group
+
+infant <- read.table("infants.csv", header = TRUE, sep=",")
+
+dim (infant)
+head(infant)
+
+# run the linear regression model and display
+model.1 <- lm(y ~ x1, data = infant)
+summary(model.1)
+
+```
+
+
+
+**Infant Group**
+
+Equation of the least squares line:
+
+y^ = 0.5040 + 0.3431 x
+
+Predicted volume for a children weighing 9kg = 
+
+y^ = 0.5040 + 0.3431 * 9 = 3.5919
+
+Predicted volume for a children weighing 9kg is equal to 3.5919 liters
+
+```{r}
+# import the data for the children group
+
+children <- read.table("children.csv", header = TRUE, sep=",")
+dim (children)
+head(children)
+
+
+# run the linear regression model and display
+model.2 <- lm(y ~ x1, data = children)
+summary(model.2)
+
+```
+
+
+
+**Children Group**
+
+Equation of the least squares line:
+
+y^ = 0.01807 +  0.36071 x
+
+Predicted volume for infant weighing 18kg = 
+
+y^ = 0.01807 +  0.36071 * 18 = 6.51085
+
+Predicted volume for an infant weighing 18kg is equal to 6.51085 liters
+
+
+```{r}
+# import the data for the adult group
+
+adult <- read.table("adults.csv", header = TRUE, sep=",")
+dim (adult)
+head(adult)
+
+
+# run the linear regression model and display
+model.3 <- lm(y ~ x1, data = adult)
+summary(model.3)
+
+```
+
+
+
+**Adult Group**
+
+Equation of the least squares line:
+
+y^ = 11.7495 +  0.1374 x
+
+Predicted volume for an adult weighing 78kg = 
+
+y^ = 11.7495 +  0.1374 * 78 = 22.4667
+
+Predicted volume for an adult weighing 78kg is equal to 22.4667 liters
+
+
+
+
+
+
+
+
+*2. Examine whether a relationship exists between blood type and whether one is a carrier from the data presented in Problem 12.17, page 572 (from the 11th ed. of our text) or Problem 12.17, page 659 (if you are using the 10th ed. of our text).*
+
+```{r}
+# import the data and create a matrix
+
+bloty <- matrix(c(72,230,54,192,16,63,8,15), ncol = 4, byrow = TRUE)
+
+colnames(bloty) <- c("0","A","B","AB")
+rownames(bloty) <- c("Carriers", "Noncarriers")
+
+# create a table for the matrix
+bloty <- as.table(bloty)
+
+bloty
+
+# run the chisq.test 
+results <- chisq.test(bloty)
+results$expected
+
+# display the results
+results
+
+# create a barplot to graphically show the results
+barplot(bloty, ylim = c(0,300), ylab = "counts", beside = TRUE, legend = TRUE)
+```
+
+**Chi-Square Test**:
+
+Ho: No relationship exist between blood type and whether one is a carrier or a non-carrier
+
+Ha: There is a relationship between blood type and whether one is a carrier or a non-carrier
+
+Test Statistic: X2* = 19.412 with df = 3
+
+P-value: 0.0002246
+
+Conclusion: Reject Ho in favor of Ha. There is sufficient evidence to conclude that a relationship exist between blood type and whether one is a carrier or a non-carrier.  
+
+```{r}
+
+# barplot for the data
+barplot(bloty, ylim = c(0,300), ylab = "counts", beside = TRUE, legend = TRUE)
+
+```
+
+**Post-Hoc Analysis**:
+
+Since it was concluded that there is a relationship between the blood group and if one is a carrier or a non-carrier, we can conduct the Post-Hoc analysis to investigate this relationship.
+
+```{r}
+# post-hoc analysis using a barplot to see which group is different
+rowsum <- rowSums (bloty, na.rm = FALSE, dims = 1)
+barplot(bloty/rowsum, ylim = c(0,0.8), ylab = "Percents", beside = TRUE, legend = TRUE)
+
+```
+
+

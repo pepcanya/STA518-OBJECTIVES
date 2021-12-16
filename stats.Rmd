@@ -1,0 +1,168 @@
+---
+title: 'STATS'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question 1:
+
+
+Head Injury associated with car crashes is obviously of great interest to the National Transportation Safety Administration. New cars were purchased and crashed into a fixed barrier at 35 mi/hr, and a variety of measurements were recorded from crash car dummies in the driver and passenger seats. The head injury data (measured in units of standard head injury condition or hic) are given below:
+
+•	Subcompact: 781, 528, 917, 898, 520
+
+•	Compact: 643, 655, 442, 514, 525
+
+•	Midsized: 469, 727, 525, 454, 259
+
+•	Full-sized: 384, 456, 402, 287, 360
+
+```{r echo=FALSE, results='hide',message=FALSE}
+
+# importing the data
+headi <- c(781,528,917,898,520,643,655,442,514,525,469,727,525,454,259,384,456,402,287,360)
+pop <- c("subc","subc","subc","subc","subc","comp","comp","comp","comp","comp","mids","mids"
+         ,"mids","mids","mids","full","full","full","full","full")
+
+
+```
+
+```{r}
+# create the model and display the summary
+
+lm.model <- lm(headi ~ pop)
+summary (lm.model)
+
+
+```
+
+
+
+```{r}
+# Creating anova model
+model1 <- aov(headi ~ pop)
+
+
+
+uhat <-resid(model1)
+qqnorm(uhat)
+
+```
+
+
+
+```{r echo=FALSE, results='hide',message=FALSE}
+# Running the shapiro test to check for normality
+shapiro.test(uhat)
+
+```
+
+Ho: Residuals follow a normal distribution
+
+Ha: Residuals do not follow a normal distribution
+ 
+Test statistic: W* = 0.97082
+
+P-value: 0.772
+
+Conclusion (at the .05 level): Fail to reject Ho. There is insufficient evidence to conclude that the residues do not follow a normal distribution. 
+
+```{r}
+# Run the bartlett test
+bartlett.test(headi ~ pop)
+
+```
+
+Ho: Group variances equal
+
+Ha: At least one group had a variance that differs
+ 
+Test statistic: K-squared = 5.2742
+
+P-value: 0.1528
+
+Conclusion (at the .05 level): Fail to reject Ho. There is not sufficient evidence to conclude that at least one group had a variance that differs
+
+```{r}
+# Display the summary output
+summary(model1)
+
+```
+
+Ho: M1 = M2 = M3 = M4
+
+Ha: At least one M differs
+ 
+Test statistic: F* = 5.564
+
+P-value:0.00825
+
+Conclusion (at the .05 level): Reject Ho in favor of Ha. There is sufficient evidence to conclude that at least one difference in the M head injury condition among the four groups. 
+
+```{r}
+# Run the Tukey Test to check for the mean among the groups
+TukeyHSD(model1, conf.level = 0.95)
+
+```
+
+Conclusion: We are 95% confident that there is a difference in the mean head injury condition among the four groups. According to the Tukey test, we can affirm that there is a difference in the mean between the subcompact group and full-sized group. 
+
+
+
+Question 2:
+
+
+Two opthamologists studies nine subjects with diabetic macular edema. They measured the forveal thickness in the nine eyes pre- and post-unilateral vitrectomy surgery (the goal of the surgery was to reduce thickness). The results are shown in the following table:
+
+
+```{r}
+pre <- c(690,540,470,690,730,1840,500,630,440)
+after <- c(210,280,230,200,300,230,210,240,200)
+diffs <- pre - after
+diffs
+
+# Common descriptive statistics and graph
+
+summary(diffs)
+boxplot(diffs, col="lightblue", horizontal = TRUE)
+
+qqnorm(diffs)
+qqline(diffs)
+
+# Shapiro Test to evaluate normality
+
+shapiro.test(diffs)
+
+```
+
+Ho: Data Follows a normal distribution
+
+Ha: Data does not follow a normal distribution
+ 
+Test statistic: W* = -0.60028
+
+P-value:0.0000964
+
+Conclusion (at the .05 level): Reject Ho in favor of Ha. There is sufficient evidence to conclude that the differences does not follow a normal distribution. 
+
+```{r}
+# Run wilcox test
+wilcox.test(pre, after, paired=TRUE)
+
+
+```
+
+Ho: The median before is the same as the median after
+
+Ha: The median before is different from the media after
+
+Test statistic: V* = 45
+
+P-value:0.00901
+
+Conclusion (at the .05 level): Reject Ho in favor of Ha. There is sufficient evidence to conclude that the median of the difference is not 0. 
+
+

@@ -1,0 +1,215 @@
+---
+title: "Descriptive Analysis for GVSU Graduate students"
+output:
+  pdf_document: default
+  html_document: default
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE, results='hide',message=FALSE}
+
+# import packages
+library(shiny)
+library(shinythemes)
+library(ggplot2)
+library(dplyr)
+library(IRdisplay)
+library(gganimate)
+library(googlesheets4)
+library(tidyverse)
+library(gifski)
+library(plotly)
+
+
+```
+
+
+```{r, echo=FALSE}
+# import data
+
+country = read.table("by_country20_21-2.csv", header = TRUE, sep = ",")
+
+gender = read.csv("Gender.csv", header = TRUE, sep = ",")
+
+ethnicity = read.csv("by_ethnicity.csv", header = TRUE, sep = ",")
+
+college = read.csv("college.csv", header = TRUE, sep = ",")
+
+```
+
+
+
+
+
+
+
+**Introduction**: 
+
+This project has the objective to analyze and describe the data of Graduate Students in Grand Valley State University. The data was obtained from the GVSU office of Institutional analysis. This project focuses on the years from 2015-2016 to 2020-2021. Grand Valley State University had 7 colleges in the graduate program until 2018-2019. The first seven colleges were: College of Community and public service, college of education, college of health professions, college of liberal arts and sciences, Kirkhof college of Nursing, Padnos college of Engineering and computing, and Seidman college of Business. In 2018-2019 Grand Valley added a new college, which was Brooks college of Interdisciplinary studies. 
+
+The main variables that the project was focused on were the following:
+
+- Students by colleges
+- Students by gender
+- Students by Ethnicity
+- International students
+
+**Descriptive Analysis**
+
+
+## Students by colleges
+
+```{r, echo=FALSE}
+# Barplot for colleges over the last 6 years
+
+df <- college %>% group_by(college) %>% summarize(data = sum(data))
+    g <- ggplot(df, aes( y = data, x = college,fill=college),)
+    p <- g + geom_bar(stat = "sum") 
+    p 
+
+```
+
+
+- Conclusions:
+
+In 2015-2016 the college that had the most students was College of Health Professions with 405 students.
+
+In 2016-2017, the college that had the most students was College of Health Professions with 396 students.
+
+In 2017-2018, the college that had the most students was College of Health Professions with 371 students. 
+
+In 2018-2019, the college that had the most students was College of Education with 405 students. 
+
+In 2019-2020, the college that had the most students was College of Education with 364 students. 
+
+In 2020-2021, the college that had the most students was College of Education with 399 students.
+
+
+## Students by gender
+
+```{r, echo=FALSE}
+ggplot(gender, aes( y = Total, x = Sex, fill=Sex))+geom_bar(stat='identity')
+     ggplot(gender, aes(fill=Sex, y=Total, x=Year)) + 
+       geom_bar(position="dodge", stat="identity")
+
+```
+
+
+- Conclusions:
+
+After analyzing the gener for Graduate students, it showed that almost three quarters of the students were female. The year that had more females was 2020-2021 while the year that had less females was 2017-2018. On the male side, the year that had the most male students was 2015-2016, while the year that had less male students was 2019-2020. 
+
+
+
+
+
+
+
+
+## Students by Ethnicity
+
+```{r, echo=FALSE}
+g <- ggplot(ethnicity, aes( y = Total, x = Year,color=Ethnicity))
+  g + geom_line()+theme_bw()
+
+```
+
+
+
+
+
+
+- Conclusions:
+
+The ethnicity that predominates the most is “White”. Other ethnicities that also have students are: African American, American Indian or Alaskan Native, Asian, Hispanic or Latino, Native Hawaiian or other pacific island, non-resident international, and others. 
+In the line chart we can see that white is the one that has the highest number of students, while the other categories have similar numbers of students. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## International students
+
+
+2020 - 2021:
+
+```{r, echo=FALSE}
+# Create a world map using ggplot
+
+intlall<-read.csv("by_country20_21-2.csv", stringsAsFactors = FALSE)
+intlall <- intlall %>% filter(Year==2020) 
+world_map=map_data("world")
+world_map=merge(world_map,intlall,by.x="region",by.y="Country")
+world_map=world_map[order(world_map$group, world_map$order),]
+ggplot(world_map, aes(x=long, y=lat, group=group)) +geom_polygon(aes(fill=Total), color="black")+coord_map("ortho", orientation = c(20,50,10))
+    
+```
+
+
+** This map shows the number of international students in 2020 - 2021**
+
+- Conclusions:
+
+In 2020-2021, the country that had more students was India, with a total of 48 students. The total number of international students was 58. 
+
+
+In 2019-2020, the country that had more students was India, with a total of 23 students. 
+The total number of international students was 66. 
+
+
+In 2018-2019, the country that had more students was India, with a total of 20 students.
+The total number of international students was 69.
+
+
+In 2017-2018, the country that had more students was Nepal, with a total of 18 students. The total number of international students was 87. 
+
+
+In 2016-2017, the country that had more students was India, with a total of 26 students.
+The total number of international students was 84. 
+
+
+In 2015-2016, the country that had more students was India, with a total of 43 students.
+The total number of international students was 90.
+
+
+- As the conclusions shown above, the number of international students declined over the past six years. 
+
